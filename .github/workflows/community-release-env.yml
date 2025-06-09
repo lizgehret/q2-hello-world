@@ -17,10 +17,6 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/releases/latest")
           LATEST_RELEASE=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
 
-          echo "Github org/repo name: ${{ github.repository }}"
-
-          echo "Latest release tag name: $LATEST_RELEASE"
-
           echo "RELEASE_TAG=$LATEST_RELEASE" >> $GITHUB_ENV
 
       - name: Construct and export env vars from copier answers
@@ -29,12 +25,25 @@ jobs:
           PACKAGE_NAME=$(grep -oP '^package_name:\s*\K.+' .copier-answers.yml || true)
           TARGET_DISTRO=$(grep -oP '^target_distro:\s*\K.+' .copier-answers.yml || true)
 
-          echo "Package name: $PACKAGE_NAME"
-          echo "Target distro: $TARGET_DISTRO"
-
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
           echo "TARGET_DISTRO=$TARGET_DISTRO" >> $GITHUB_ENV
 
+      - name: Modify existing release env file with new release tag
+        shell: bash
+        run: |
+          pip install --upgrade pyyaml
+          python - <<EOF
+          import os
+          import yaml
 
+          release_env_path = \
+            "environment-files/$PACKAGE_NAME-qiime2-$TARGET_DISTRO-release.yml"
 
-      # - name: Modify release env file
+          if not os.path.exists(release_env_path):
+            raise Exception(f"{release_env_path} not found.")
+
+          with open(release_env_path, "r") as fh:
+            content = fh.read()
+            data = yaml.safe_load(content)
+
+            raise ValueError(data["dependencies"]["pip"])
