@@ -24,8 +24,8 @@ jobs:
       - name: Construct and export env vars from copier answers
         shell: bash
         run: |
-          PACKAGE_NAME=$(grep -oP "package_name\s*=\s*'\K[^']+" .copier-answers.yml || true)
-          TARGET_DISTRO=$(grep -oP "target_distro\s*=\s*'\K[^']+" .copier-answers.yml || true)
+          PACKAGE_NAME=$(grep -oP '^package_name:\s*\K.+' .copier-answers.yml || true)
+          TARGET_DISTRO=$(grep -oP '^target_distro:\s*\K.+' .copier-answers.yml || true)
 
           echo "Package name: $PACKAGE_NAME"
           echo "Target distro: $TARGET_DISTRO"
