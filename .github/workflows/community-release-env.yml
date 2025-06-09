@@ -29,7 +29,6 @@ jobs:
           echo "TARGET_DISTRO=$TARGET_DISTRO" >> $GITHUB_ENV
 
       - name: Modify existing release env file with new release tag
-        shell: bash
         run: |
           pip install --upgrade pyyaml
           python - <<EOF
