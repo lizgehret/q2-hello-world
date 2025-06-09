@@ -1,5 +1,6 @@
 channels:
-- https://packages.qiime2.org/qiime2/2025.4/tiny/passed
+# this becomes our symlinked release environment file for the given distro
+- https://packages.qiime2.org/qiime2/2025.4/tiny/released
 - conda-forge
 - bioconda
 dependencies:
