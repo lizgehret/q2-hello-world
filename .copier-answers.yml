@@ -1,0 +1,19 @@
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Changes here will be overwritten by Copier
+# NEVER EDIT MANUALLY
+# INSTEAD: run a recopy or update command
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+_commit: 50d6fe6
+_src_path: caporaso-lab/cookiecutter-qiime2-plugin
+author_email: q2-dev@example.com
+author_name: A QIIME 2 Plugin Developer
+dev_target: stable
+license: skip-license
+module_name: q2_hello_world
+package_name: q2-hello-world
+plugin_description: A QIIME 2 plugin template.
+plugin_name: hello-world
+plugin_short_description: Plugin template.
+project_url: https://example.com
+target_distro: tiny
