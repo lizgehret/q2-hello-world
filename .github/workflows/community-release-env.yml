@@ -107,11 +107,20 @@ jobs:
       #     git fetch upstream
       #     git checkout -b automated/release-$RELEASE_TAG-env-file-updates upstream/main
 
+      - name: Determine default branch
+        id: default-branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          DEFAULT_BRANCH=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+          echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
+
       - name: Create pull request with updated release env file
         uses: qiime2-cutlery/create-pull-request@v5
         with:
           token: ${{ github.token }}
           branch: automated/release-$RELEASE_TAG-env-file-updates
+          base: $DEFAULT_BRANCH
           title: "Automated updates to release environment file"
           body: |
             This pull request automatically updates your plugin's
