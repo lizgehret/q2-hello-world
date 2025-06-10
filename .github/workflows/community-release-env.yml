@@ -59,7 +59,7 @@ jobs:
 
           updated = False
           for i, entry in enumerate(pip_deps):
-            pattern = rf'^{package_name}@git\+https://github\.com/.+?\.git@[\w.-]+$'
+            pattern = rf'^{pkg_name}@git\+https://github\.com/.+?\.git@[\w.-]+$'
 
             if re.match(pattern, entry):
               new_release = os.environ.get('RELEASE_TAG')
