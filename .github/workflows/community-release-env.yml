@@ -77,10 +77,11 @@ jobs:
           if not updated:
             raise ValueError(f'No pip install found for package {pkg_name}.')
 
-          raise ValueError(env_data)
-
           with open(release_env_path, 'w') as fh:
             yaml.safe_dump(env_data, fh, sort_keys=False)
+
+          print(f'Updated {pkg_name} pip install to release {new_release}.')
+          EOF
 
       - name: Create pull request with updated release env file
         uses: qiime2-cutlery/create-pull-request@v5
