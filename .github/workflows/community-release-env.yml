@@ -85,10 +85,10 @@ jobs:
 
       - name: Check for q2d2 fork and clone if fork doesn't already exist
         env:
-          GH_TOKEN: ${{ secrets.BOT_PAT }}
+          GH_TOKEN: ${{ github.token }}
           UPSTREAM_REPO: ${{ github.repository }}
         run: |
-          echo "Checking if q2d2 has already forked $UPSTREAM_REPO..."
+          echo "Checking if q2d2 has already forked ${{ env.UPSTREAM_REPO }}..."
 
           if gh repo view "q2d2/$(basename $UPSTREAM_REPO)" --json name -q .name > /dev/null 2>&1; then
             echo "Fork already exists!"
@@ -110,7 +110,7 @@ jobs:
       - name: Create pull request with updated release env file
         uses: qiime2-cutlery/create-pull-request@v5
         with:
-          token: ${{ secrets.BOT_PAT }}
+          token: ${{ github.token }}
           branch: automated/release-$RELEASE_TAG-env-file-updates
           title: "Automated updates to release environment file"
           body: |
