@@ -35,14 +35,46 @@ jobs:
           import os
           import yaml
 
+          pkg_name = os.environ['PACKAGE_NAME']
+          target_distro = os.environ['TARGET_DISTRO']
+
           release_env_path = \
-            "environment-files/$PACKAGE_NAME-qiime2-$TARGET_DISTRO-release.yml"
+            f'environment-files/{pkg_name}-qiime2-{target_distro}-release.yml'
 
           if not os.path.exists(release_env_path):
-            raise Exception(f"{release_env_path} not found.")
+            raise Exception(f'{release_env_path} not found.')
 
-          with open(release_env_path, "r") as fh:
-            content = fh.read()
-            data = yaml.safe_load(content)
+          with open(release_env_path, 'r') as fh:
+            env_data = yaml.safe_load(fh)
 
-            raise ValueError(data["dependencies"]["pip"])
+          # make sure that the dependency is both a dict obj AND 'pip'
+          pip_deps = None
+          for dep in env_data.get('dependencies', []):
+            if isinstance(dep, dict) and 'pip' in dep:
+              pip_deps = dep['pip']
+              break
+
+          if pip_deps is None:
+            raise ValueError('No pip section found under dependencies.')
+
+          updated = False
+          for i, entry in enumerate(pip_deps):
+            pattern = rf'^{package_name}@git\+https://github\.com/.+?\.git@[\w.-]+$'
+
+            if re.match(pattern, entry):
+              new_release = os.environ.get('RELEASE_TAG')
+
+              if not new_release:
+                raise ValueError('New Github release tag not found.')
+
+              pip_deps[i] = re.sub(r"(@git\+.+?\.git@)[\w.-]+", rf"\1{new_release}", entry)
+              updated = True
+              break
+
+          if not updated:
+            raise ValueError(f'No pip install found for package {pkg_name}.')
+
+          raise ValueError(env_data)
+
+          with open(release_env_path, 'w') as fh:
+            yaml.safe_dump(env_data, fh, sort_keys=False)
