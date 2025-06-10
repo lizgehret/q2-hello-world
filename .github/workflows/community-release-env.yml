@@ -87,30 +87,6 @@ jobs:
           print(f'Updated {pkg_name} pip install to release {new_release}.')
           EOF
 
-      # - name: Check for q2d2 fork and clone if fork doesn't already exist
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
-      #     UPSTREAM_REPO: ${{ github.repository }}
-      #   run: |
-      #     echo "Checking if q2d2 has already forked ${{ env.UPSTREAM_REPO }}..."
-
-      #     if gh repo view "q2d2/$(basename $UPSTREAM_REPO)" --json name -q .name > /dev/null 2>&1; then
-      #       echo "Fork already exists!"
-      #     else
-      #       echo "Fork does not exist. Creating fork..."
-      #       gh repo fork "$UPSTREAM_REPO" --clone=false --remote=false --org="q2d2"
-      #       echo "Fork created!"
-      #     fi
-
-      #     echo "Cloning forked repo..."
-      #     gh repo clone "q2d2/$(basename $UPSTREAM_REPO)" forked-repo
-      #     cd forked-repo
-
-      #     echo "Setting up remotes..."
-      #     git remote add upstream "https://github.com/$UPSTREAM_REPO.git"
-      #     git fetch upstream
-      #     git checkout -b automated/release-$RELEASE_TAG-env-file-updates upstream/main
-
       - name: Determine default branch
         id: default-branch
         env:
@@ -130,25 +106,17 @@ jobs:
           base: ${{ env.DEFAULT_BRANCH }}
           title: "Automated updates to release environment file"
           body: |
-            This pull request automatically updates your plugin's
-            release environment file upon detection of a newly published
-            Github release.
+            This pull request automatically updates your plugin's release environment file upon detection of a newly published Github release.
 
-            !! PLEASE REVIEW THE CHANGES CAREFULLY BEFORE MERGING!!
+            !! PLEASE REVIEW THE CHANGES CAREFULLY BEFORE MERGING !!
 
-            Once this pull request has been opened, an additional check will
-            run through Github Actions. This check ensures the environment is
-            installable with the newly updated Github release tag.
+            Once this pull request has been opened, an additional check will run through Github Actions. This check ensures the environment is installable with the newly updated Github release tag.
 
             - If this check fails:
-              Please examine the logs closely to determine why the updated
-              environment couldn't be installed. If you are unable to resolve
-              this on your own, please don't hesitate to reach out on our
-              user forum at forum.qiime2.org!
+              - Please examine the logs closely to determine why the updated environment couldn't be installed. If you are unable to resolve this on your own, please don't hesitate to reach out on our user forum at https://forum.qiime2.org!
 
             - If this check passes:
-              You should be all set to merge this pull request!
-              Congrats on the new release, and happy QIIMEing :)
+              You should be all set to merge this pull request! Congrats on the new release, and happy QIIMEing :)
           author: 'q2d2 <q2d2.noreply@gmail.com>'
           committer: 'q2d2 <q2d2.noreply@gmail.com>'
           commit-message: |
