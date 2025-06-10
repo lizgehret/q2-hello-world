@@ -83,29 +83,29 @@ jobs:
           print(f'Updated {pkg_name} pip install to release {new_release}.')
           EOF
 
-      - name: Check for q2d2 fork and clone if fork doesn't already exist
-        env:
-          GH_TOKEN: ${{ github.token }}
-          UPSTREAM_REPO: ${{ github.repository }}
-        run: |
-          echo "Checking if q2d2 has already forked ${{ env.UPSTREAM_REPO }}..."
+      # - name: Check for q2d2 fork and clone if fork doesn't already exist
+      #   env:
+      #     GH_TOKEN: ${{ github.token }}
+      #     UPSTREAM_REPO: ${{ github.repository }}
+      #   run: |
+      #     echo "Checking if q2d2 has already forked ${{ env.UPSTREAM_REPO }}..."
 
-          if gh repo view "q2d2/$(basename $UPSTREAM_REPO)" --json name -q .name > /dev/null 2>&1; then
-            echo "Fork already exists!"
-          else
-            echo "Fork does not exist. Creating fork..."
-            gh repo fork "$UPSTREAM_REPO" --clone=false --remote=false --org="q2d2"
-            echo "Fork created!"
-          fi
+      #     if gh repo view "q2d2/$(basename $UPSTREAM_REPO)" --json name -q .name > /dev/null 2>&1; then
+      #       echo "Fork already exists!"
+      #     else
+      #       echo "Fork does not exist. Creating fork..."
+      #       gh repo fork "$UPSTREAM_REPO" --clone=false --remote=false --org="q2d2"
+      #       echo "Fork created!"
+      #     fi
 
-          echo "Cloning forked repo..."
-          gh repo clone "q2d2/$(basename $UPSTREAM_REPO)" forked-repo
-          cd forked-repo
+      #     echo "Cloning forked repo..."
+      #     gh repo clone "q2d2/$(basename $UPSTREAM_REPO)" forked-repo
+      #     cd forked-repo
 
-          echo "Setting up remotes..."
-          git remote add upstream "https://github.com/$UPSTREAM_REPO.git"
-          git fetch upstream
-          git checkout -b automated/release-$RELEASE_TAG-env-file-updates upstream/main
+      #     echo "Setting up remotes..."
+      #     git remote add upstream "https://github.com/$UPSTREAM_REPO.git"
+      #     git fetch upstream
+      #     git checkout -b automated/release-$RELEASE_TAG-env-file-updates upstream/main
 
       - name: Create pull request with updated release env file
         uses: qiime2-cutlery/create-pull-request@v5
@@ -137,4 +137,3 @@ jobs:
           committer: 'q2d2 <q2d2.noreply@gmail.com>'
           commit-message: |
             automated update of release environment file for $RELEASE_TAG
-          push-to-fork: q2d2/target-repo
