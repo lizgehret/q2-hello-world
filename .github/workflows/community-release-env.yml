@@ -81,3 +81,34 @@ jobs:
 
           with open(release_env_path, 'w') as fh:
             yaml.safe_dump(env_data, fh, sort_keys=False)
+
+      - name: Create pull request with updated release env file
+        uses: qiime2-cutlery/create-pull-request@v5
+        with:
+          token: ${{ secrets.BOT_PAT }}
+          branch: automated/release-${{ RELEASE_TAG }}-env-file-updates
+          title: "Automated updates to release environment file"
+          body: |
+            This pull request automatically updates your plugin's
+            release environment file upon detection of a newly published
+            Github release.
+
+            !! PLEASE REVIEW THE CHANGES CAREFULLY BEFORE MERGING!!
+
+            Once this pull request has been opened, an additional check will
+            run through Github Actions. This check ensures the environment is
+            installable with the newly updated Github release tag.
+
+            - If this check fails:
+              Please examine the logs closely to determine why the updated
+              environment couldn't be installed. If you are unable to resolve
+              this on your own, please don't hesitate to reach out on our
+              user forum at forum.qiime2.org!
+
+            - If this check passes:
+              You should be all set to merge this pull request!
+              Congrats on the new release, and happy QIIMEing :)
+          author: 'q2d2 <q2d2.noreply@gmail.com>'
+          committer: 'q2d2 <q2d2.noreply@gmail.com>'
+          commit-message: |
+            automated update of release environment file for ${{ RELEASE_TAG }}
