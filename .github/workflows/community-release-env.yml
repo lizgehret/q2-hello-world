@@ -1,4 +1,7 @@
 name: community-release-env
+permissions:
+  contents: write
+  pull-requests: write
 on:
   release:
     types: [published]
