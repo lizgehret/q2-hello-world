@@ -6,4 +6,4 @@ dependencies:
 - qiime2-tiny
 - pip
 - pip:
-  - q2-hello-world@git+https://github.com/lizgehret/q2-hello-world.git@2025.6.0
+  - q2-hello-world@git+https://github.com/lizgehret/q2-hello-world.git@2025.6.22
