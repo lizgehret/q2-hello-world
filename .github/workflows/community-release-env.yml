@@ -87,7 +87,7 @@ jobs:
         uses: qiime2-cutlery/create-pull-request@v5
         with:
           token: ${{ secrets.BOT_PAT }}
-          branch: automated/release-${{ RELEASE_TAG }}-env-file-updates
+          branch: automated/release-$RELEASE_TAG-env-file-updates
           title: "Automated updates to release environment file"
           body: |
             This pull request automatically updates your plugin's
@@ -112,4 +112,4 @@ jobs:
           author: 'q2d2 <q2d2.noreply@gmail.com>'
           committer: 'q2d2 <q2d2.noreply@gmail.com>'
           commit-message: |
-            automated update of release environment file for ${{ RELEASE_TAG }}
+            automated update of release environment file for $RELEASE_TAG
