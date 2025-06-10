@@ -33,6 +33,7 @@ jobs:
           pip install --upgrade pyyaml
           python - <<EOF
           import os
+          import re
           import yaml
 
           pkg_name = os.environ['PACKAGE_NAME']
