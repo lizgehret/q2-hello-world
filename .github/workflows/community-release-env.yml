@@ -68,7 +68,9 @@ jobs:
               if not new_release:
                 raise ValueError('New Github release tag not found.')
 
-              pip_deps[i] = re.sub(r"(@git\+.+?\.git@)[\w.-]+", rf"\1{new_release}", entry)
+              pip_deps[i] = re.sub(r"(@git\+.+?\.git@)[\w.-]+",
+                  lambda m: f"{m.group(1)}{new_release}", entry
+              )
               updated = True
               break
 
