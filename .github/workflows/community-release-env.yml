@@ -146,7 +146,7 @@ jobs:
           title: "[${{ env.RELEASE_TAG }}] Automated updates to release environment file"
           body: |
             <details>
-            <summary>*What does this pull request do?*</summary>
+            <summary><i>What does this pull request do?</i></summary>
 
             <br>
 
