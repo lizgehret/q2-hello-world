@@ -31,12 +31,16 @@ jobs:
 
             content = response.content.decode('utf-8')
             data_yaml = yaml.safe_load(content)
-            os.environ['RELEASED_EPOCH'] = data_yaml['released_epoch']
+            released_epoch = data_yaml['released_epoch']
+
+            with open(os.environ['GITHUB_ENV'], 'a') as envfile:
+              envfile.write(f'RELEASED_EPOCH={released_epoch}\n')
 
           except requests.exceptions.RequestException as e:
             print(f'Error fetching the URL: {e}')
           except yaml.YAMLError as e:
             print(f'Error parsing YAML: {e}')
+          EOF
 
       - name: Get release info
         id: get-release-name
