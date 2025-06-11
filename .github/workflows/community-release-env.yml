@@ -16,7 +16,7 @@ jobs:
       - name: Get release info
         id: get-release-name
         run: |
-          echo ${{ github.event.repository.* }}
+          echo '${{ toJSON(github.event.repository) }}'
 
           RELEASE_JSON=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/releases/latest")
