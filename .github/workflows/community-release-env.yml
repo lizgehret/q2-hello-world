@@ -128,10 +128,11 @@ jobs:
           if not updated:
             raise ValueError(f'No pip install found for package {pkg_name}.')
 
-          with open(release_env_path, 'w') as fh:
+          new_env_path = f'environment-files/{pkg_name}-qiime2-{target_distro}-release-{os.environ['RELEASE_TAG']}.yml'
+          with open(new_env_path, 'w') as fh:
             yaml.safe_dump(env_data, fh, sort_keys=False)
 
-          print(f'Updated {pkg_name} pip install to release {new_release}.')
+          print(f'Created new release environment file: {new_env_path}.')
           EOF
 
       - name: Create pull request with updated release env file
