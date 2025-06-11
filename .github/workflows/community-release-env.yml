@@ -143,10 +143,10 @@ jobs:
           token: ${{ github.token }}
           branch: automated/release-${{ env.RELEASE_TAG }}-env-file-updates
           base: ${{ env.DEFAULT_BRANCH }}
-          title: "Automated updates to release environment file"
+          title: "[${{ env.RELEASE_TAG }}] Automated updates to release environment file"
           body: |
             <details>
-            <summary>What does this pull request do?</summary>
+            <summary>*What does this pull request do?*</summary>
 
             <br>
 
