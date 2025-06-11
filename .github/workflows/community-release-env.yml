@@ -13,16 +13,30 @@ jobs:
       - name: 'checkout source'
         uses: actions/checkout@v4
 
-      - name: Get data.yaml
-        id: yaml
-        uses: qiime2/distributions/.github/actions/read-yaml@dev
-        with:
-          file: https://raw.githubusercontent.com/qiime2/distributions/refs/heads/dev/data.yaml
-
-      - name: Set released_epoch var
-        id: set-released-epoch
+      - name: Get released_epoch from data.yaml
+        id: get-released-epoch
         run: |
-            echo ${{ steps.yaml.outputs.data }}
+          pip install --upgrade pyyaml
+          python - <<EOF
+          import requests
+          import yaml
+
+          data_url = \
+            'https://raw.githubusercontent.com/qiime2/distributions/refs/heads/dev/data.yaml'
+
+          try:
+            response = requests.get(data_url, allow_redirects=True)
+            response.raise_for_status()
+
+            content = response.content.decode('utf-8')
+            data_yaml = yaml.safe_load(content)
+            released_epoch = data_yaml['released_epoch']
+            raise ValueError(released_epoch)
+
+          except requests.exceptions.RequestException as e:
+            print(f'Error fetching the URL: {e}')
+          except yaml.YAMLError as e:
+            print(f'Error parsing YAML: {e}')
 
       - name: Get release info
         id: get-release-name
