@@ -13,8 +13,20 @@ jobs:
       - name: 'checkout source'
         uses: actions/checkout@v4
 
+      - name: Get release info
+        id: get-release-name
+        run: |
+          echo ${{ github.event.release.tag_name }}
+          echo ${{ github.event.repository.main_branch }}
+
+          RELEASE_JSON=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/latest")
+          LATEST_RELEASE=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+
+          echo "RELEASE_TAG=$LATEST_RELEASE" >> $GITHUB_ENV
+          echo "RELEASE_TAG=$LATEST_RELEASE" >> $GITHUB_OUTPUT
+
       - name: Get released_epoch from data.yaml
-        id: get-released-epoch
         run: |
           pip install --upgrade pyyaml
           python - <<EOF
@@ -41,16 +53,6 @@ jobs:
           except yaml.YAMLError as e:
             print(f'Error parsing YAML: {e}')
           EOF
-
-      - name: Get release info
-        id: get-release-name
-        run: |
-          RELEASE_JSON=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/latest")
-          LATEST_RELEASE=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
-
-          echo "RELEASE_TAG=$LATEST_RELEASE" >> $GITHUB_ENV
-          echo "RELEASE_TAG=$LATEST_RELEASE" >> $GITHUB_OUTPUT
 
       - name: Construct and export env vars from copier answers
         shell: bash
