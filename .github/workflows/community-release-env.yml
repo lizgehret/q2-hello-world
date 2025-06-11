@@ -86,10 +86,11 @@ jobs:
           for i, channel in enumerate(channels):
             if 'https://packages.qiime2.org/qiime2/' in channel:
               updated_channel = re.sub(
-                r'(https://packages\.qiime2\.org/qiime2/)([^/]+)(/.+)',
-                rf'\1{released_epoch}\3',
-                channel
+                  r'(https://packages\.qiime2\.org/qiime2/)([^/]+)(/.+)',
+                  lambda m: f"{m.group(1)}{released_epoch}{m.group(3)}",
+                  channel
               )
+
               channels[i] = updated_channel
               break
 
