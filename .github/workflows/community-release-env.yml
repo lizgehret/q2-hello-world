@@ -148,18 +148,23 @@ jobs:
             <details>
             <summary>What does this pull request do?</summary>
 
+            <br>
+
             This pull request automatically updates your plugin's release environment file upon detection of a newly published GitHub release.
 
             Once this pull request has been opened, an additional check will run through GitHub Actions. This check ensures the environment is installable with the newly updated GitHub release tag.
+
             </details>
 
-            !! PLEASE WAIT FOR THE CHECK BELOW TO RUN BEFORE MERGING !!
+            ---
+
+            **‼️ PLEASE WAIT FOR THE CHECK BELOW TO RUN BEFORE MERGING ‼️**
 
             - If this check fails:
               - Please examine the logs closely to determine why the updated environment couldn't be installed. If you are unable to resolve this on your own, please don't hesitate to reach out on our user forum at https://forum.qiime2.org!
 
             - If this check passes:
-              - You should be all set to merge this pull request! Congrats on the new release, and happy QIIMEing :)
+              - You should be all set to merge this pull request! Congrats on the new release, and happy QIIMEing 🤓
 
           author: 'q2d2 <q2d2.noreply@gmail.com>'
           committer: 'q2d2 <q2d2.noreply@gmail.com>'
