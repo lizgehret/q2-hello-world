@@ -13,6 +13,17 @@ jobs:
       - name: 'checkout source'
         uses: actions/checkout@v4
 
+      - name: Get data.yaml
+        id: yaml
+        uses: qiime2/distributions/.github/actions/read-yaml@dev
+        with:
+          file: https://raw.githubusercontent.com/qiime2/distributions/refs/heads/dev/data.yaml
+
+      - name: Set released_epoch var
+        id: set-released-epoch
+        run: |
+            echo ${{ steps.yaml.outputs.data }}
+
       - name: Get release info
         id: get-release-name
         run: |
@@ -32,7 +43,7 @@ jobs:
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
           echo "TARGET_DISTRO=$TARGET_DISTRO" >> $GITHUB_ENV
 
-      - name: Modify existing release env file with new release tag
+      - name: Modify existing release env file
         run: |
           pip install --upgrade pyyaml
           python - <<EOF
