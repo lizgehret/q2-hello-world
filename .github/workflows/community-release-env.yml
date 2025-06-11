@@ -86,7 +86,7 @@ jobs:
           for i, channel in enumerate(channels):
             if 'https://packages.qiime2.org/qiime2/' in channel:
               updated_channel = re.sub(
-                r'(https://packages.\qiime2.\org/qiime2/)([^/]+)(/.+)',
+                r'(https://packages\.qiime2\.org/qiime2/)([^/]+)(/.+)',
                 rf'\1{released_epoch}\3',
                 channel
               )
