@@ -1,6 +1,6 @@
 name: Test newly minted release environment file
 on:
-  pull_request:
+  pull_request_target:
     paths:
       - environment-files/**
 
