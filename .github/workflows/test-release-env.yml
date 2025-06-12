@@ -1,8 +1,8 @@
 name: Test newly minted release environment file
 on:
-  pull_request_target:
-    paths:
-      - environment-files/**
+  push:
+    branches:
+      - 'automated/release-*-env-file-updates'
 
 jobs:
   test-install:
@@ -23,7 +23,7 @@ jobs:
     - name: Detect newly added release env file
       id: detect-env-file
       run: |
-        ENV_FILE=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '^environment-files/.*-release-.*\.yml' || true)
+        ENV_FILE=$(git diff --name-only HEAD^ HEAD | grep '^environment-files/.*-release-.*\.yml' || true)
         if [[ -z "$ENV_FILE" ]]; then
           echo "No new release environment file found."
           exit 1
