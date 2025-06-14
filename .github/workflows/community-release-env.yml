@@ -128,7 +128,7 @@ jobs:
           if not updated:
             raise ValueError(f'No pip install found for package {pkg_name}.')
 
-          new_env_path = f'environment-files/{pkg_name}-qiime2-{target_distro}-release-{os.environ['RELEASE_TAG']}.yml'
+          new_env_path = f'environment-files/{pkg_name}-qiime2-{target_distro}-{released_epoch}-release-{os.environ['RELEASE_TAG']}.yml'
           with open(new_env_path, 'w') as fh:
             yaml.safe_dump(env_data, fh, sort_keys=False)
 
@@ -171,3 +171,20 @@ jobs:
           committer: 'q2d2 <q2d2.noreply@gmail.com>'
           commit-message: |
             automated update of release environment file for '${{ env.RELEASE_TAG }}'
+
+      - name: Set up conda
+        uses: qiime2-cutlery/setup-miniconda@v3
+        with:
+          activate-environment: test-env
+          miniforge-version: latest
+
+      - name: Try installing new release env file
+        run: |
+          ENV_PATH = 'environment-files/${{ env.PACKAGE_NAME }}-qiime2-${{ env.TARGET_DISTRO }}-${{ env.RELEASED_EPOCH }}-release-${{ env.RELEASE_TAG }}.yml'
+          conda env create -n test-release-env -f $ENV_PATH
+
+      - name: Activate and check version info
+        run: |
+          source "$(conda info --base)/etc/profile.d/conda.sh"
+          conda activate test-release-env
+          conda list
