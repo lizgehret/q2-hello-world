@@ -179,8 +179,9 @@ jobs:
           miniforge-version: latest
 
       - name: Try installing new release env file
+        shell: bash
         run: |
-          ENV_PATH = 'environment-files/${{ env.PACKAGE_NAME }}-qiime2-${{ env.TARGET_DISTRO }}-${{ env.RELEASED_EPOCH }}-release-${{ env.RELEASE_TAG }}.yml'
+          echo "ENV_PATH=environment-files/${{ env.PACKAGE_NAME }}-qiime2-${{ env.TARGET_DISTRO }}-${{ env.RELEASED_EPOCH }}-release-${{ env.RELEASE_TAG }}.yml"
           conda env create -n test-release-env -f $ENV_PATH
 
       - name: Activate and check version info
