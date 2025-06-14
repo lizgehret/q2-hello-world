@@ -181,9 +181,7 @@ jobs:
       - name: Try installing new release env file
         shell: bash
         run: |
-          pwd
-          ls
-          echo "ENV_PATH=environment-files/${{ env.PACKAGE_NAME }}-qiime2-${{ env.TARGET_DISTRO }}-${{ env.RELEASED_EPOCH }}-release-${{ env.RELEASE_TAG }}.yml"
+          ENV_PATH='environment-files/${{ env.PACKAGE_NAME }}-qiime2-${{ env.TARGET_DISTRO }}-${{ env.RELEASED_EPOCH }}-release-${{ env.RELEASE_TAG }}.yml'
           conda env create -n test-release-env -f $ENV_PATH
 
       - name: Activate and check version info
