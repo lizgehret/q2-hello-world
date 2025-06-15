@@ -7,7 +7,7 @@ on:
     types: [published]
 
 jobs:
-  create-pr:
+  create-pr-and-install-env:
     runs-on: ubuntu-latest
     steps:
       - name: 'checkout source'
@@ -190,3 +190,19 @@ jobs:
           source "$(conda info --base)/etc/profile.d/conda.sh"
           conda activate test-release-env
           conda list
+
+      - name: Add comment to PR with env install result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if conda env list | grep -q test-release-env; then
+            gh pr comment "$PR_NUMBER" \
+              --body ":white_check_mark: **Environment install test passed!**"
+          else
+            gh pr comment "$PR_NUMBER" \
+              --body ":x: **Environment install test failed.** Please check the [workflow logs](https://github.com/$REPO/actions/runs/$RUN_ID) for details."
+          fi
