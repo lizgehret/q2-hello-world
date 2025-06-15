@@ -192,12 +192,14 @@ jobs:
           conda list
 
       - name: Get job ID
+        if: always()
         id: get-job-id
         uses: Tiryoh/gha-jobid-action@v1.4.0
         with:
           job_name: create-pr-and-install-env
 
       - name: test job ID
+        if: always()
         env:
           JOB_ID: ${{ steps.get-job-id.outputs.job_id }}
           JOB_URL: ${{ steps.get-job-id.outputs.html_url }}
