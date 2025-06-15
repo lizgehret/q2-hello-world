@@ -193,13 +193,10 @@ jobs:
 
       - name: Get job ID
         id: job-id
-        env:
-          GH_TOKEN: ${{ github.token }}
-          JOB_NAME: ${{ github.job }}
         run: |
-          JOB_ID=$(gh run view ${{ github.run_id }} --json jobs \
-            --jq ".jobs[] | select(.name == env.JOB_NAME) | .id")
-          echo "JOB_ID=$JOB_ID" >> $GITHUB_OUTPUT
+          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
+          job_id=$(echo $jobs | jq -r '.jobs[] | select(.runner_name=="${{ runner.name }}") | .id')
+          echo "JOB_ID=$job_id" >> $GITHUB_OUTPUT
 
       - name: Add comment to PR with env install result
         if: always()
