@@ -192,11 +192,19 @@ jobs:
           conda list
 
       - name: Get job ID
-        id: job-id
+        id: get-job-id
+        uses: Tiryoh/gha-jobid-action@v1.4.0
+        with:
+          job_name: create-pr-and-install-env
+
+      - name: test job ID
+        env:
+          JOB_ID: ${{ steps.get-job-id.outputs.job_id }}
+          JOB_URL: ${{ steps.get-job-id.outputs.html_url }}
+        shell: bash
         run: |
-          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
-          job_id=$(echo $jobs | jq -r '.jobs[] | select(.runner_name=="${{ runner.name }}") | .id')
-          echo "JOB_ID=$job_id" >> $GITHUB_OUTPUT
+          echo ${{ env.JOB_ID }}
+          echo ${{ env.JOB_URL }}
 
       - name: Add comment to PR with env install result
         if: always()
@@ -204,7 +212,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           RUN_ID: ${{ github.run_id }}
-          JOB_ID: ${{ steps.job-id.outputs.JOB_ID }}
+          JOB_ID: ${{ steps.get-job-id.outputs.job_id }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           if conda env list | grep -q test-release-env; then
