@@ -153,20 +153,22 @@ jobs:
 
             This pull request automatically updates your plugin's release environment file upon detection of a newly published GitHub release.
 
-            Once this pull request has been opened, an additional check will run through GitHub Actions. This check ensures the environment is installable with the newly updated GitHub release tag.
+            Once this pull request has been opened, an environment installation test is automatically triggered through Github Actions to ensure the updated environment is valid and installable.
 
             </details>
 
             ---
 
-            **‼️ PLEASE WAIT FOR THE CHECK BELOW TO RUN BEFORE MERGING ‼️**
+            **‼️ PLEASE REVIEW THE COMMENT BELOW BEFORE MERGING ‼️**
 
-            - If this check fails:
-              - Please examine the logs closely to determine why the updated environment couldn't be installed. If you are unable to resolve this on your own, please don't hesitate to reach out on our user forum at https://forum.qiime2.org!
+            After this pull request is opened, an environment installation test will run automatically. Once the test completes, a comment will be added to this pull request with the result.
 
-            - If this check passes:
-              - You should be all set to merge this pull request! Congrats on the new release, and happy QIIMEing 🤓
+            - ✅ **If the test passes:** You’ll see a green checkmark comment indicating the environment is installable.
+            - ❌ **If the test fails:** You’ll see a red X comment with a link to the workflow logs to help troubleshoot.
 
+            If you run into issues and aren’t sure how to proceed, feel free to reach out on the [QIIME 2 Forum](https://forum.qiime2.org)!
+
+            Happy QIIMEing 🤓
           author: 'q2d2 <q2d2.noreply@gmail.com>'
           committer: 'q2d2 <q2d2.noreply@gmail.com>'
           commit-message: |
